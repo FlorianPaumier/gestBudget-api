@@ -1,0 +1,27 @@
+<html>
+<link rel="stylesheet" href="{{ asset('bundles/app/css/email.css') }}">
+<body>
+<div class="container">
+    <div class="header border">
+        <h1 class="title">On commence lundi</h1>
+    </div>
+
+    <div class="body">
+        Bonjour {{ FirstName }},<br>
+        Suite à votre demande, votre compte On commence lundi a été supprimé.<br>
+        Si vous avez des remarques ou des suggestions pour améliorer notre service, n’hésitez pas à nous les communiquer à l’adresse bonjour@oncommencelundi.com <br>
+        Excellente journée. <br>
+        L’équipe On commence lundi. <br>
+
+    </div>
+    <div class="footer border" style="margin-top: 50px">
+        {{ include('Emails/footer.html.twig') }}
+    </div>
+
+</div>
+
+
+<script src="{{ asset('bundles/app/js/fontawesome.all.min.js') }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,139 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% extends 'layout_security.html.twig' %}
+
+{% block in_head %}
+    {{ parent() }}
+
+    <script>
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '520263801779022',
+                cookie     : true,  // enable cookies to allow the server to access the session
+                xfbml      : true,  // parse social plugins on this page
+                version    : 'v2.8' // use graph api version 2.8
+            });
+        };
+    </script>
+{% endblock %}
+
+
+{% block full_page_middle %}
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v3.2&appId=520263801779022&autoLogAppEvents=1';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+
+    <div id="full_page_middle" class="col-12 mb-0 pb-2">
+        <h1 class="h3 mb-3 font-weight-normal text-ocl-blue text-uppercase text-center">Connexion</h1>
+
+        {#Formulaire de connexion#}
+        <form id="form-signin" class="text-center" action="{{ path("fos_user_security_check") }}" method="post">
+            {% if csrf_token %}
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+            {% endif %}
+
+            <input type="email" id="username" name="_username" class="form-control" placeholder="E-mail" required>
+            <small class="form-help text-danger">
+            </small>
+
+            <input type="password" id="password" name="_password" class="form-control" placeholder="Mot de passe" required>
+            <div class="checkbox text-left">
+                <label>
+                    <input type="checkbox" id="remember_me" name="_remember_me" value="on"> Se souvenir de moi
+                </label>
+            </div>
+            {% if error %}
+                <div class="pb-3 text-danger error-log">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+            <p><button class="btn btn-outline-ocl-light-blue" type="submit">Se connecter</button></p>
+            <a class="forgetPassword" style="display: block" href="{{ path('fos_user_resetting_request') }}">Mot de passe oublié ?</a>
+            {#Login Facebook à décommenté pour la version production#}
+            <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+            </fb:login-button>
+            {#<div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="login_with"
+                 data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>#}
+
+            {#Login Linkedin à décommenté pour la version production#}
+            <script type="in/Login"></script>
+
+            {#<button class="linkedinLoginBtn" name="LinkedinLogin" type="button" value="Se connectier avec Linkedin">
+                <span>
+                    <img src="/bundles/app/img/img_btn_social_network/Linkedin-logo.png" 
+                    alt="Bouton de connexion avec Linkedin" 
+                    title="Bouton de connexion avec Linkedin">
+                </span>
+                Se connecter avec LinkedIn
+            </button>
+            <br>
+            <button class="facebookLoginBtn" name="FacebookLogin" type="button" value="Se connectier avec Facebook">
+                <span>
+                    <img src="/bundles/app/img/img_btn_social_network/Facebook-logo.png" 
+                    alt="Bouton de connexion avec Facebook" 
+                    title="Bouton de connexion avec Facebook">
+                </span>
+                Se connecter avec Facebook
+            </button>#}
+            {#<button class="linkedinLoginBtn" name="LinkedinLogin" type="button" value="Se connectier avec Linkedin">
+                <img src="/bundles/app/img/img_btn_social_network/Sign-In-Small---Default.png" 
+                    alt="Bouton de connexion avec Linkedin" 
+                    title="Bouton de connexion avec Linkedin"
+                    class="LinkedinLoginBtn"
+                    onmouseover="this.src='/bundles/app/img/img_btn_social_network/Sign-In-Small---Hover.png'" 
+                    onmouseout="this.src='/bundles/app/img/img_btn_social_network/Sign-In-Small---Default.png'">
+            </button>
+            <div class="fb-login-button" data-max-rows="1" data-size="medium" 
+                    data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" 
+                    data-use-continue-as="false"></div>#}
+        </form>
+
+        {#Button d'inscription#}
+        <div class="div-register text-center my-3">
+            <p class="text-ocl-light-gray">Vous n’avez pas encore de compte ?</p>
+            <a class="btn btn-outline-ocl-light-mauve" href="{{ path('fos_user_registration_register') }}">S'inscrire</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        function checkLoginState() {
+            FB.getLoginStatus(function(response) {
+                statusChangeCallback(response);
+            });
+        }
+
+        function statusChangeCallback(response) {
+            if (response.status === 'connected') {
+                window.location.href = '{{ path('social-network-facebook-signin') }}';
+            }
+        }
+    </script>
+{% endblock %}
+
+
+
+{#
+<form action="{{ path("fos_user_security_check") }}" method="post">
+    {% if csrf_token %}
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+    {% endif %}
+
+    <label for="username">{{ 'security.login.username'|trans }}</label>
+    <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" autocomplete="username" />
+
+    <label for="password">{{ 'security.login.password'|trans }}</label>
+    <input type="password" id="password" name="_password" required="required" autocomplete="current-password" />
+
+    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+    <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+
+    <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+</form>
+#}

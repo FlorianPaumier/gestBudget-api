@@ -1,0 +1,60 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% extends 'layout_security.html.twig' %}
+
+{% block full_page_middle %}
+    <div id="full_page_middle" class="col-12">
+        <h1 class="h3 mb-5 font-weight-normal text-ocl-blue text-uppercase text-center">Inscription</h1>
+{#
+        {% if app.request.hasPreviousSession %}
+            {% for type, messages in app.session.flashbag.all() %}
+                {% for message in messages %}
+                    <div class="flash-{{ type }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+#}
+        {# Formulaire de connexion #}
+        {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr':
+            {
+                'class': 'fos_user_registration_register', 'id': 'form-signin'
+            }
+        }) }}
+
+        <div class="form-group">
+            {{ form_widget(form.email.first, {'attr': {'class': 'form-control m-0', 'placeholder': 'form.email'}}) }}
+
+            <small class="form-help text-danger">
+                {{ form_errors(form.email.first) }}
+            </small>
+        </div>
+
+        {{ form_widget(form.email.second, {'attr': {'class': 'form-control', 'placeholder': 'form.email_confirmation'}}) }}
+
+        <div class="form-group">
+            {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control m-0', 'placeholder': 'form.password'}}) }}
+
+            <small class="form-help text-danger">
+                {{ form_errors(form.plainPassword.first) }}
+            </small>
+        </div>
+        {# <div class="progress progress-ocl">
+            <div class="progress-bar progress-bar-ocl bg-ocl-mauve" role="progressbar"
+                 style="width: 75%;" aria-valuenow="25" aria-valuemin="0"
+                 aria-valuemax="100"></div>
+        </div>
+        <span class="d-inline-block mb-3 font-weight-light text-ocl-light-gray">Mot de passe fort</span>#}
+
+        {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control', 'placeholder': 'form.password_confirmation'}}) }}
+
+        {# Selectionner checkbox candidat #}
+        {{ form_widget(form.roles.0, {'attr': {'class': 'form-control d-none'}}) }}
+        {{ form_widget(form.roles.1, {'attr': {'class': 'form-control d-none', 'checked': 'checked'}}) }}
+
+        <button class="btn btn-outline-ocl-light-blue" type="submit">Se connecter</button>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+api:
+    city:
+        not_found: 'Ville introuvable'
+    school:
+        not_found: 'École introuvable'
+    file:
+        not_found: 'Fichier introuvable'
+    file_version:
+        not_found: 'Fichier introuvable'
+    user:
+        not_found: 'Utilisateur introuvable'
+    not_found: 'Ressource introuvable'

@@ -1,0 +1,8 @@
+api:
+    city:
+        not_found: 'City not found'
+    school:
+        not_found: 'School not found'
+    user:
+        not_found: 'User not found'
+    not_found: 'Resource not found'

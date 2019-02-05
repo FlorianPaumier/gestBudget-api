@@ -1,0 +1,17 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% extends 'layout_security.html.twig' %}
+
+{% block full_page_middle %}
+
+
+
+    <div id="full_page_middle" class="col-12">
+        <h1 class="h3 mb-5 font-weight-normal text-ocl-blue text-uppercase text-center">Mot de passe oublié</h1>
+        <div id="form-signin" class="fos_user_resetting_request text-center">
+            <p style="color:white">
+                {{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime})|nl2br }}
+            </p>
+        </div>
+    </div>
+{% endblock %}

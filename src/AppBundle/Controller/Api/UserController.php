@@ -2,11 +2,12 @@
 
 namespace AppBundle\Controller\Api;
 
+use AppBundle\Controller\ApiController;
 use AppBundle\Entity\User;
 use AppBundle\Form\UserRegistrationType;
 use AppBundle\Model\Representation\PaginatedRepresentation;
+use AppBundle\Service\EmailApi;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\FOSRestController;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
@@ -18,7 +19,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserController extends FOSRestController
+class UserController extends ApiController
 {
     /**
      * @Rest\Get("/user")
@@ -64,7 +65,7 @@ class UserController extends FOSRestController
     /**
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @Rest\Get("/user/current")
-     * @Rest\View(serializerGroups={"user"}, statusCode=Response::HTTP_OK)
+     * @Rest\View(serializerGroups={"user", "profile_light"}, statusCode=Response::HTTP_OK)
      * @OA\Get(
      *     path="/user/current",
      *     tags={"User"},
@@ -83,12 +84,12 @@ class UserController extends FOSRestController
      *     path="/register",
      *     tags={"User"},
      *     description="Register a new user",
-     *     @OA\RequestBody(required=true, @OA\JsonContent(ref="#/components/schemas/User")),
+     *     @OA\RequestBody(required=true, @OA\JsonContent(ref="#/components/schemas/UserRegistrationTypeRepresentation")),
      *     @OA\Response(response="201", description="Resource created"),
      *     @OA\Response(response="400", description="Bad request")
      * )
      */
-    public function postUserAction(Request $request)
+    public function postUserAction(Request $request, EmailApi $emailApi)
     {
         //TODO: fix RequestBody documentation
         $userManager = $this->get('fos_user.user_manager');
@@ -111,7 +112,7 @@ class UserController extends FOSRestController
             if ($event->getResponse()) {
                 return $event->getResponse();
             }
-
+            $user->setEnabled(true);
             $userManager->updateUser($user);
             $message = $this->get('translator')->trans('registration.flash.user_created', [], 'FOSUserBundle');
             $token = $this->get('lexik_jwt_authentication.jwt_manager')->create($user);
@@ -122,6 +123,7 @@ class UserController extends FOSRestController
                 new FilterUserResponseEvent($user, $request, $response)
             );
 
+
             return $response;
         }
 
@@ -129,6 +131,31 @@ class UserController extends FOSRestController
         $eventDispatcher->dispatch(FOSUserEvents::REGISTRATION_FAILURE, $event);
 
         return $form;
+    }
+
+    /**
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * @Rest\Patch(path="/user/{id}", requirements={"id"="\d+"})
+     * @Rest\View(serializerGroups={"user", "profile"}, statusCode=Response::HTTP_OK)
+     * @OA\Post(
+     *     path="/user/{id}",
+     *     tags={"User"},
+     *     description="Updates a user",
+     *     @OA\RequestBody(required=true, @OA\JsonContent(ref="#/components/schemas/UserRegistrationTypeRepresentation")),
+     *     @OA\Response(response="200", description="Successful operation"),
+     *     @OA\Response(response="400", description="Bad request")
+     * )
+     */
+    public function patchUserAction(Request $request, User $user)
+    {
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        if ($this->getUser() !== $user && $currentUser->hasRole('ROLE_ADMIN')) {
+
+        }
+
+        $this->getUser();
+        return $user;
     }
 
     /**
@@ -158,8 +185,18 @@ class UserController extends FOSRestController
 
     private function errorUserNotFound()
     {
-        $code = Response::HTTP_NOT_FOUND;
+        $message = $this->get('translator.default')->trans('api.user.not_found', [], 'errors');
 
-        return JsonResponse::create(['code' => $code, 'message' => 'Not found'], $code);
+        return $this->errorNotFound($message);
     }
+
+    /**
+     * @OA\Post(
+     *     path="/login",
+     *     tags={"User"},
+     *     @OA\RequestBody(required=true, @OA\JsonContent(ref="#/components/schemas/UserLoginTypeRepresentation")),
+     *     @OA\Response(response="200", description="Successful operation"),
+     *     @OA\Response(response="401", description="Bad credentials")
+     * )
+     */
 }

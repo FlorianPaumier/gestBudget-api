@@ -1,0 +1,22 @@
+{% trans_default_domain 'FOSUserBundle' %}
+{% block subject %}
+{%- autoescape false -%}
+{{ 'registration.email.subject'|trans({'%username%': user.username, '%confirmationUrl%': confirmationUrl}) }}
+{%- endautoescape -%}
+{% endblock %}
+
+{% block body_text %}
+    {% set role = 'ROLE_APPLICANT' in user.roles ? 'Candidat' : 'Recruteur' %}
+{% autoescape false %}
+
+Bonjour,
+
+Vous venez de demander votre inscription {{ role }}, sur ON COMMENCE LUNDI et nous vous en remercions.
+
+Vous devez à présent confirmer votre adresse email en cliquant sur ce lien {{ confirmationUrl }} pour accéder à votre espace {{ role }}.
+
+A tout de suite
+
+{% endautoescape %}
+{% endblock %}
+{% block body_html %}{% endblock %}

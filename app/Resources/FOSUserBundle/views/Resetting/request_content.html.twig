@@ -1,0 +1,23 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% extends 'layout_security.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+{% endblock %}
+{% block full_page_middle %}
+
+    <div id="full_page_middle" class="col-12">
+        <h1 class="h3 mb-5 font-weight-normal text-ocl-blue text-uppercase text-center">Mot de passe oublié</h1>
+            <form id="form-signin" action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request text-center">
+                <div>
+                    <input class="form-control" type="text" id="username" name="username" required="required" placeholder="{{ 'resetting.request.username'|trans }}"/>
+                </div>
+                <div>
+                    <input class="btn btn-outline-ocl-light-blue" type="submit" value="{{ 'resetting.request.submit'|trans }}" />
+                </div>
+            </form>
+
+    </div>
+{% endblock %}

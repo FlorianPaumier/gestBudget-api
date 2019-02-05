@@ -33,3 +33,15 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+
+    service.email:
+        public: true
+        autowire: true
+        class: AppBundle\Service\EmailApi
+        arguments: ["@mailer", "@twig"]
+
+    app.registration_confirmer:
+        class: AppBundle\EventListener\RegistrationListener
+        arguments: ['@router', '@doctrine.orm.entity_manager']
+        tags:
+            - { name: kernel.event_subscriber }

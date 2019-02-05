@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/gestBudget.iml" filepath="$PROJECT_DIR$/.idea/gestBudget.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../oclundi/.idea/oclundi.iml" filepath="$PROJECT_DIR$/../oclundi/.idea/oclundi.iml" />
     </modules>
   </component>
 </project>

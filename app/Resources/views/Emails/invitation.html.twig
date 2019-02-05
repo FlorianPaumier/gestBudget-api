@@ -1,0 +1,46 @@
+<html>
+<link rel="stylesheet" href="{{ asset('bundles/app/css/email.css') }}">
+<body>
+<div class="container">
+    <div class="header border">
+        <h1 class="title">On commence lundi</h1>
+    </div>
+
+    <div class="body">
+        <p>Bonjour,</p>
+        <p>
+            {{ firstName }} {{ lastName }} vous invite à rejoindre ON COMMENCE LUNDI, le site des offres d’emploi des professionnels du tourisme.
+            <br>
+            Si vous recherchez un emploi dans les secteurs : <br>
+            voyages,<br>
+            loisirs,<br>
+            transports,<br>
+            événementiel,<br>
+            hébergement & restauration,<br>
+            autres secteurs liés au tourisme,<br>
+        </p>
+        <p>
+            <a href="https://oncommencelundi.unsitetoutdesuite.fr/app.php">cliquer ici</a>
+            {% if sponsor is not null %}et pensez à indiquer la référence Parrain / Marraine {{ sponsor }} de {{ firstName }} pour lui faire gagner des miles{% endif %}
+        </p>
+        <p>
+
+            A tout de suite.<br>
+            <br>
+            L'équipe On Commence Lundi
+        </p>
+    </div>
+
+
+
+
+
+
+
+</div>
+
+
+<script src="{{ asset('bundles/app/js/fontawesome.all.min.js') }}"></script>
+</body>
+
+</html>

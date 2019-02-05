@@ -1,3 +1,11 @@
-app:
-    resource: '@AppBundle/Controller/'
+documentation:
+    resource: "@AppBundle/Controller/DocumentationController.php"
     type: annotation
+
+debug:
+    resource: "@AppBundle/Controller/DebugController.php"
+    type: annotation
+
+routing_api:
+    resource: routing_api.yml
+

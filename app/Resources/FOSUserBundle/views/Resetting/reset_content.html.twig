@@ -1,0 +1,23 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% extends 'layout_security.html.twig' %}
+
+{% block full_page_middle %}
+
+
+
+    <div id="full_page_middle" class="col-12">
+        <h1 class="h3 mb-5 font-weight-normal text-ocl-blue text-uppercase text-center">Mot de passe oublié</h1>
+        {{ form_start(form, { 'action': path('fos_user_resetting_reset', {'token': token}), 'attr': { 'class': 'fos_user_resetting_request text-center', 'id': 'form-signin' } }) }}
+
+        {{ form_widget(form.plainPassword.first, {'attr':{'class':'form-control', 'placeholder':'Nouveau mot de passe'}}) }}
+        {{ form_widget(form.plainPassword.second, {'attr':{'class':'form-control', 'placeholder':'Répéter le nouveau mot de passe'}}) }}
+
+        {#{{ form }}#}
+        {{ form_widget(form) }}
+        <div>
+            <input class="btn btn-outline-ocl-light-blue" type="submit" value="{{ 'resetting.reset.submit'|trans }}" />
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

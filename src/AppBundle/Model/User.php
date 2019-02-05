@@ -14,7 +14,7 @@ use OpenApi\Annotations as OA;
  *
  * @OA\Schema()
  */
-class User extends BaseUser
+abstract class User extends BaseUser
 {
     /**
      * @OA\Property(type="integer")

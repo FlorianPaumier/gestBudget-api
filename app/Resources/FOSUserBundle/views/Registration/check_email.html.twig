@@ -1,0 +1,21 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% extends 'layout_security.html.twig' %}
+
+{% block full_page_middle %}
+
+
+    {% set role = 'ROLE_APPLICANT' in user.roles ? 'Candidat' : 'Recruteur' %}
+
+    <div id="full_page_middle" class="col-12">
+        <h1 class="h3 mb-5 font-weight-normal text-ocl-blue text-uppercase text-center">Inscription</h1>
+        <div id="form-signin" class="fos_user_resetting_request text-center">
+            <p style="color:white">
+                Vous venez de demander votre inscription {{ role }} sur ON COMMENCE LUNDI et nous vous en remercions.<br/>
+                Vous devez à présent confirmer votre adresse email en cliquant sur le lien reçu sur votre mail {{ user.email }} pour accéder à votre
+                espace {{ role }}.<br/>
+            </p>
+        </div>
+
+    </div>
+{% endblock %}
